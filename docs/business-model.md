@@ -2,7 +2,7 @@
 
 ## Classification
 
-- Repository: `cloud-itonami-8690`
+- Repository: `cloud-itonami-isic-8690`
 - ISIC Rev.5: `8690`
 - Activity: other human health activities -- allied health services (physiotherapy, chiropractic, optometry, ambulance and paramedical services) not classified as hospital or physician practice
 - Social impact: care quality, data sovereignty, transparent audit

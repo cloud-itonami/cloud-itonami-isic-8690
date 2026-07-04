@@ -1,4 +1,4 @@
-{:itonami.blueprint/id "cloud-itonami-8690"
+{:itonami.blueprint/id "cloud-itonami-isic-8690"
  :itonami.blueprint/name "Other human health activities"
  :itonami.blueprint/isic-rev5 "8690"
  :itonami.blueprint/domain :health/allied-health

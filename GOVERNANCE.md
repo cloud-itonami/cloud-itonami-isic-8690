@@ -1,6 +1,6 @@
 # Governance
 
-`cloud-itonami-8690` is an OSS open-business blueprint for other human health activities -- allied health services (physiotherapy, chiropractic, optometry, ambulance and paramedical services) not classified as hospital or physician practice.
+`cloud-itonami-isic-8690` is an OSS open-business blueprint for other human health activities -- allied health services (physiotherapy, chiropractic, optometry, ambulance and paramedical services) not classified as hospital or physician practice.
 Governance covers both the capability layer and the operator model.
 
 ## Maintainers

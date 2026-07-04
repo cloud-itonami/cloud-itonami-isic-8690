@@ -1,4 +1,4 @@
-# cloud-itonami-8690
+# cloud-itonami-isic-8690
 
 Open Business Blueprint for **ISIC Rev.5 8690**: Other human health activities.
 

@@ -1,5 +1,9 @@
 # Operator Quickstart
 
+## Who This Is For
+
+This guide is for **licensed allied-health practices** (physiotherapy clinics, chiropractic offices, optometry practices, ambulance services, or paramedical providers) who want to operate their own encounter intake, assessment verification, practitioner screening, and treatment-session administration system without surrendering patient data to a third-party SaaS. You'll need Clojure CLI installed and some comfort reading through code to understand how the Governor enforces your compliance gates.
+
 ## Prerequisites
 
 - **Clojure 1.11+** with `clojure` CLI tool installed
@@ -36,7 +40,7 @@ This walks the operation actor (`src/alliedhealth/operation.cljc`) through:
 
 ## Explore the Governor
 
-The **Allied Health Governor** sits at `src/alliedhealth/governor.cljc` and enforces the core contract:
+The **Allied Health Governor** is your safety layer. The full implementation is at [`src/alliedhealth/governor.cljc`](../src/alliedhealth/governor.cljc) and enforces the core contract:
 
 ```
 AlliedHealth-LLM → Allied Health Governor → hold, proceed, or escalate

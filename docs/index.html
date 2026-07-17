@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Other human health activities - cloud-itonami-isic-8690</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #fafafa;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: #1a1a1a;
+        }
+
+        .isic-badge {
+            display: inline-block;
+            background: #e8e8e8;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .pitch {
+            font-size: 1.1em;
+            line-height: 1.8;
+            margin-bottom: 40px;
+            color: #444;
+        }
+
+        .pitch p {
+            margin-bottom: 15px;
+        }
+
+        .links-section {
+            margin-bottom: 40px;
+            padding: 20px;
+            background: #fff;
+            border-left: 4px solid #0066cc;
+        }
+
+        .links-section h2 {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            color: #1a1a1a;
+        }
+
+        .links-section ul {
+            list-style: none;
+        }
+
+        .links-section li {
+            margin-bottom: 12px;
+        }
+
+        .links-section a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        .links-section a:hover {
+            text-decoration: underline;
+        }
+
+        .cta-section {
+            margin-bottom: 30px;
+        }
+
+        .cta-section h2 {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            color: #1a1a1a;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 12px 24px;
+            margin-right: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .cta-primary {
+            background: #0066cc;
+            color: white;
+        }
+
+        .cta-primary:hover {
+            background: #0052a3;
+        }
+
+        .cta-secondary {
+            background: #f0f0f0;
+            color: #0066cc;
+            border: 1px solid #ddd;
+        }
+
+        .cta-secondary:hover {
+            background: #e8e8e8;
+        }
+
+        footer {
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid #ddd;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .tech-stack {
+            margin-top: 30px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 4px;
+        }
+
+        .tech-stack h3 {
+            margin-bottom: 10px;
+            color: #1a1a1a;
+        }
+
+        .tech-stack p {
+            color: #666;
+            font-size: 0.95em;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .pitch {
+                font-size: 1em;
+            }
+
+            .cta-button {
+                display: block;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Other human health activities</h1>
+            <div class="isic-badge">ISIC Rev.5 8690</div>
+        </header>
+
+        <section class="pitch">
+            <p>An open business blueprint for allied-health operators: encounter intake, assessment verification, practitioner-credential screening, and treatment-session administration.</p>
+
+            <p>Deployed as an LLM-driven actor wrapped with an independent <strong>Allied Health Governor</strong>, immutable audit ledger, and mandatory human sign-off for treatment delivery — no patient data leaves your infrastructure.</p>
+
+            <p>Any qualified, licensed allied-health practice (physiotherapy, chiropractic, optometry, ambulance, or paramedical services) can fork, deploy, self-host, and operate this blueprint under AGPL-3.0 — eliminating the choice between regulatory safety and data sovereignty.</p>
+        </section>
+
+        <section class="links-section">
+            <h2>Documentation</h2>
+            <ul>
+                <li><a href="https://github.com/com-junkawasaki/cloud-itonami-isic-8690">Repository README</a> — Full architecture, scope, and design</li>
+                <li><a href="operator-quickstart.md">Operator Quickstart</a> — Run tests, deploy the demo, explore the governor</li>
+                <li><a href="business-model.md">Business Model</a> — Customer, offer, revenue, and trust controls</li>
+                <li><a href="operator-guide.md">Operator Guide</a> — First deployment and minimum production controls</li>
+                <li><a href="adr/0001-architecture.md">Architecture Decision Record</a> — Design history and rationale</li>
+            </ul>
+        </section>
+
+        <section class="cta-section">
+            <h2>Get Started</h2>
+            <a href="https://itonami.cloud/isco-1212/" class="cta-button cta-primary">Fork + Self-Host</a>
+            <a href="https://itonami.cloud/docs/go-live.md" class="cta-button cta-secondary">Paid Hosting Path</a>
+        </section>
+
+        <div class="tech-stack">
+            <h3>Built on</h3>
+            <p><strong>StateGraph runtime</strong> (langgraph-clj) with Datomic/in-memory checkpoints, portable across JVM, ClojureScript, and GraalVM. <strong>Governor</strong> enforces hard checks: spec-basis citation, complete evidence, scope-of-practice membership, and current credentials. <strong>Robotics-first</strong> design with independent hardware gating layer.</p>
+        </div>
+
+        <footer>
+            <p><strong>Cloud Itonami</strong> — Open business blueprints for regulated industries.</p>
+            <p>License: AGPL-3.0-or-later</p>
+        </footer>
+    </div>
+</body>
+</html>

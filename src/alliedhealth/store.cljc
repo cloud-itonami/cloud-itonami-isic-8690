@@ -29,10 +29,9 @@
   whom' is always a query over an immutable log -- the audit trail a
   patient trusting a practice needs, and the evidence an operator
   needs if a treatment session is later disputed."
-  (:require #?(:clj  [clojure.edn :as edn]
-               :cljs [cljs.reader :as edn])
-            [alliedhealth.registry :as registry]
-            [langchain.db :as d]))
+  (:require [alliedhealth.registry :as registry]
+            [langchain.db :as d]
+            [langchain-store.core :as ls]))
 
 (defprotocol Store
   (encounter [s id])
@@ -141,45 +140,38 @@
 (def ^:private schema
   "DataScript/Datomic-style schema: only constraint attrs are declared.
   Compound values (assessment/credential payloads, ledger facts,
-  treatment-session records) are stored as EDN strings so
-  `langchain.db` doesn't expand them into sub-entities -- the same
-  convention every sibling actor's store uses."
-  {:encounter/id                {:db/unique :db.unique/identity}
-   :assessment/encounter-id     {:db/unique :db.unique/identity}
-   :credential/encounter-id     {:db/unique :db.unique/identity}
-   :ledger/seq                  {:db/unique :db.unique/identity}
-   :session/seq                 {:db/unique :db.unique/identity}
-   :sequence/jurisdiction       {:db/unique :db.unique/identity}})
+  treatment-session records, and the encounter's own
+  proposed-treatment/practitioner-scope-of-practice fields) are stored
+  as EDN strings so `langchain.db` doesn't expand them into
+  sub-entities -- the same convention every sibling actor's store
+  uses. The identity-schema builder, EDN-blob codec, field-spec-driven
+  entity (de)serialization and seq-keyed event-log read/append are the
+  shared kotoba-lang/langchain-store machinery (ADR-2607141600) -- the
+  seam ~190 actors hand-roll; this store keeps only its domain wiring."
+  (ls/identity-schema
+   [:encounter/id :assessment/encounter-id :credential/encounter-id
+    :ledger/seq :session/seq :sequence/jurisdiction]))
 
-(defn- enc [v] (pr-str v))
-(defn- dec* [s] (when s (edn/read-string s)))
+;; The encounter entity's field spec drives map->tx / pull->map /
+;; pull-pattern (langchain-store.core) -- the same present-keys-only
+;; tx-building and blob-decode-with-default read shaping the
+;; hand-written encounter->tx/pull->encounter used to do by hand.
+(def ^:private encounter-spec
+  {:id                             {:attr :encounter/id}
+   :patient-name                   {:attr :encounter/patient-name}
+   :proposed-treatment             {:attr :encounter/proposed-treatment :blob? true}
+   :practitioner-scope-of-practice {:attr :encounter/practitioner-scope-of-practice :blob? true :default #{}}
+   :credential-not-current?        {:attr :encounter/credential-not-current? :coerce boolean}
+   :treated?                       {:attr :encounter/treated? :coerce boolean}
+   :jurisdiction                   {:attr :encounter/jurisdiction}
+   :status                         {:attr :encounter/status}
+   :session-number                 {:attr :encounter/session-number}})
 
-(defn- encounter->tx [{:keys [id patient-name proposed-treatment practitioner-scope-of-practice
-                              credential-not-current? treated? jurisdiction status session-number]}]
-  (cond-> {:encounter/id id}
-    patient-name                          (assoc :encounter/patient-name patient-name)
-    proposed-treatment                     (assoc :encounter/proposed-treatment (enc proposed-treatment))
-    practitioner-scope-of-practice          (assoc :encounter/practitioner-scope-of-practice (enc practitioner-scope-of-practice))
-    (some? credential-not-current?)          (assoc :encounter/credential-not-current? credential-not-current?)
-    (some? treated?)                          (assoc :encounter/treated? treated?)
-    jurisdiction                               (assoc :encounter/jurisdiction jurisdiction)
-    status                                      (assoc :encounter/status status)
-    session-number                               (assoc :encounter/session-number session-number)))
+(defn- encounter->tx [encounter] (ls/map->tx encounter-spec encounter))
 
-(def ^:private encounter-pull
-  [:encounter/id :encounter/patient-name :encounter/proposed-treatment
-   :encounter/practitioner-scope-of-practice :encounter/credential-not-current? :encounter/treated?
-   :encounter/jurisdiction :encounter/status :encounter/session-number])
+(def ^:private encounter-pull (ls/pull-pattern encounter-spec))
 
-(defn- pull->encounter [m]
-  (when (:encounter/id m)
-    {:id (:encounter/id m) :patient-name (:encounter/patient-name m)
-     :proposed-treatment (dec* (:encounter/proposed-treatment m))
-     :practitioner-scope-of-practice (or (dec* (:encounter/practitioner-scope-of-practice m)) #{})
-     :credential-not-current? (boolean (:encounter/credential-not-current? m))
-     :treated? (boolean (:encounter/treated? m))
-     :jurisdiction (:encounter/jurisdiction m) :status (:encounter/status m)
-     :session-number (:encounter/session-number m)}))
+(defn- pull->encounter [m] (ls/pull->map encounter-spec :id m))
 
 (defrecord DatomicStore [conn]
   Store
@@ -190,21 +182,15 @@
          (map #(pull->encounter (d/pull (d/db conn) encounter-pull [:encounter/id %])))
          (sort-by :id)))
   (credential-of [_ id]
-    (dec* (d/q '[:find ?p . :in $ ?eid
+    (ls/dec* (d/q '[:find ?p . :in $ ?eid
                 :where [?k :credential/encounter-id ?eid] [?k :credential/payload ?p]]
               (d/db conn) id)))
   (assessment-of [_ encounter-id]
-    (dec* (d/q '[:find ?p . :in $ ?eid
+    (ls/dec* (d/q '[:find ?p . :in $ ?eid
                 :where [?a :assessment/encounter-id ?eid] [?a :assessment/payload ?p]]
               (d/db conn) encounter-id)))
-  (ledger [_]
-    (->> (d/q '[:find ?s ?f :where [?e :ledger/seq ?s] [?e :ledger/fact ?f]] (d/db conn))
-         (sort-by first)
-         (mapv (comp dec* second))))
-  (session-history [_]
-    (->> (d/q '[:find ?s ?r :where [?e :session/seq ?s] [?e :session/record ?r]] (d/db conn))
-         (sort-by first)
-         (mapv (comp dec* second))))
+  (ledger [_] (ls/read-stream conn :ledger/seq :ledger/fact))
+  (session-history [_] (ls/read-stream conn :session/seq :session/record))
   (next-sequence [_ jurisdiction]
     (or (d/q '[:find ?n . :in $ ?j
               :where [?e :sequence/jurisdiction ?j] [?e :sequence/next ?n]]
@@ -218,10 +204,10 @@
       (d/transact! conn [(encounter->tx value)])
 
       :assessment/set
-      (d/transact! conn [{:assessment/encounter-id (first path) :assessment/payload (enc payload)}])
+      (d/transact! conn [{:assessment/encounter-id (first path) :assessment/payload (ls/enc payload)}])
 
       :credential/set
-      (d/transact! conn [{:credential/encounter-id (first path) :credential/payload (enc payload)}])
+      (d/transact! conn [{:credential/encounter-id (first path) :credential/payload (ls/enc payload)}])
 
       :encounter/mark-treated
       (let [encounter-id (first path)
@@ -231,12 +217,12 @@
         (d/transact! conn
                      [(encounter->tx (assoc encounter-patch :id encounter-id))
                       {:sequence/jurisdiction jurisdiction :sequence/next next-n}
-                      {:session/seq (count (session-history s)) :session/record (enc (get result "record"))}])
+                      {:session/seq (count (session-history s)) :session/record (ls/enc (get result "record"))}])
         result)
       nil)
     s)
   (append-ledger! [s fact]
-    (d/transact! conn [{:ledger/seq (count (ledger s)) :ledger/fact (enc fact)}])
+    (ls/append-blob! conn :ledger/seq :ledger/fact (count (ledger s)) fact)
     fact)
   (with-encounters [s encounters]
     (when (seq encounters) (d/transact! conn (mapv encounter->tx (vals encounters)))) s))

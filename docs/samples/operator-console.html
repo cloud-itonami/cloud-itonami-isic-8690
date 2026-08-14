@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>cloud-itonami-isic-8690 · Allied Health Operator Console</title>
+<style>
+:root{
+  --color-neutral-white:#ffffff;
+  --color-neutral-solid-gray-50:#f2f2f2;
+  --color-neutral-solid-gray-100:#e6e6e6;
+  --color-neutral-solid-gray-200:#cccccc;
+  --color-neutral-solid-gray-536:#767676;
+  --color-neutral-solid-gray-600:#666666;
+  --color-neutral-solid-gray-700:#4d4d4d;
+  --color-neutral-solid-gray-800:#333333;
+  --color-neutral-solid-gray-900:#1a1a1a;
+  --color-primitive-blue-50:#e8f1fe;
+  --color-primitive-blue-100:#d9e6ff;
+  --color-primitive-blue-600:#3460fb;
+  --color-primitive-blue-800:#0031d8;
+  --color-primitive-blue-900:#0017c1;
+  --color-primitive-red-50:#fdeeee;
+  --color-primitive-red-200:#ffbbbb;
+  --color-primitive-red-800:#ec0000;
+  --color-primitive-red-900:#ce0000;
+  --color-primitive-green-50:#e6f5ec;
+  --color-primitive-green-200:#9bd4b5;
+  --color-primitive-green-600:#259d63;
+  --color-primitive-green-800:#197a4b;
+  --color-primitive-orange-50:#ffeee2;
+  --color-primitive-orange-200:#ffc199;
+  --color-primitive-orange-600:#fb5b01;
+  --color-primitive-orange-800:#c74700;
+  --font-family-sans:"Noto Sans JP",-apple-system,BlinkMacSystemFont,sans-serif;
+  --font-family-mono:"Noto Sans Mono",monospace;
+  --elevation-1:0 2px 8px 1px rgba(0,0,0,0.1),0 1px 5px 0 rgba(0,0,0,0.3);
+  --color-key-50:var(--color-primitive-blue-50);
+  --color-key-100:var(--color-primitive-blue-100);
+  --color-key-600:var(--color-primitive-blue-600);
+  --color-key-800:var(--color-primitive-blue-800);
+  --color-key-900:var(--color-primitive-blue-900);
+  --color-semantic-success-1:var(--color-primitive-green-600);
+  --color-semantic-success-2:var(--color-primitive-green-800);
+  --color-semantic-error-1:var(--color-primitive-red-800);
+  --color-semantic-error-2:var(--color-primitive-red-900);
+  --color-semantic-warning-orange-1:var(--color-primitive-orange-600);
+  --color-semantic-warning-orange-2:var(--color-primitive-orange-800);
+}
+*{box-sizing:border-box;}
+html{font-family:var(--font-family-sans);}
+body{margin:0;background:var(--color-neutral-solid-gray-50);color:var(--color-neutral-solid-gray-900);line-height:1.7;font-family:var(--font-family-sans);}
+header.bar{background:var(--color-key-900);color:var(--color-neutral-white);padding:24px 32px;}
+header.bar h1{margin:0 0 8px;font-size:1.35rem;line-height:1.5;}
+header.bar .badge{display:inline-block;background:var(--color-key-800);border:1px solid var(--color-primitive-blue-600);border-radius:4px;padding:4px 10px;font-size:.8rem;}
+main{max-width:1200px;margin:0 auto;padding:24px 16px 64px;}
+section.card{background:var(--color-neutral-white);border:1px solid var(--color-neutral-solid-gray-200);border-radius:8px;box-shadow:var(--elevation-1);padding:20px 24px;margin:0 0 24px;}
+section.card h2{margin:0 0 4px;font-size:1.1rem;color:var(--color-key-900);border-bottom:2px solid var(--color-key-100);padding-bottom:8px;}
+p.muted{color:var(--color-neutral-solid-gray-600);font-size:.85rem;margin:8px 0 16px;}
+table{border-collapse:collapse;width:100%;font-size:.82rem;}
+th,td{border-bottom:1px solid var(--color-neutral-solid-gray-100);padding:8px 10px;text-align:left;vertical-align:top;}
+th{background:var(--color-key-50);color:var(--color-key-900);font-weight:700;white-space:nowrap;border-bottom:2px solid var(--color-key-100);}
+tbody tr:hover{background:var(--color-neutral-solid-gray-50);}
+code{font-family:var(--font-family-mono);font-size:.9em;background:var(--color-neutral-solid-gray-50);border:1px solid var(--color-neutral-solid-gray-100);border-radius:3px;padding:1px 5px;}
+a{color:var(--color-key-800);}
+.pill{display:inline-block;border-radius:999px;padding:2px 10px;font-size:.75rem;font-weight:700;white-space:nowrap;border:1px solid transparent;}
+.pill.ok{background:var(--color-primitive-green-50);color:var(--color-semantic-success-2);border-color:var(--color-primitive-green-200);}
+.pill.critical{background:var(--color-primitive-red-50);color:var(--color-semantic-error-1);border-color:var(--color-primitive-red-200);}
+.pill.warn{background:var(--color-primitive-orange-50);color:var(--color-semantic-warning-orange-2);border-color:var(--color-primitive-orange-200);}
+.pill.muted{background:var(--color-neutral-solid-gray-50);color:var(--color-neutral-solid-gray-536);border-color:var(--color-neutral-solid-gray-200);}
+footer{max-width:1200px;margin:0 auto;padding:0 16px 48px;color:var(--color-neutral-solid-gray-600);font-size:.78rem;}
+footer code{background:var(--color-neutral-white);}
+</style></head>
+<body>
+<header class="bar">
+  <h1>その他の人体健康活動 (ISIC 8690) — Allied Health Operator Console</h1>
+  <span class="badge">read-only sample · governor-gated · treatment-session administration is ALWAYS a human call at every phase</span>
+</header>
+<main>
+  <section class="card">
+    <h2>Encounters</h2>
+    <p class="muted">Live snapshot of <code>alliedhealth.store</code> after the run. Seeded from <code>alliedhealth.store/demo-data</code> — 4 encounters, 8 committed ops, 5 HARD holds, 1 treatment-session record(s) minted.</p>
+    <table>
+      <thead><tr><th>Encounter</th><th>Patient</th><th>Jurisdiction</th><th>Proposed treatment</th><th>Practitioner scope of practice</th><th>Credential</th><th>Session</th><th>Last op</th></tr></thead>
+      <tbody>
+        <tr><td><code>encounter-1</code></td><td>Sato Kenji</td><td>JPN</td><td><code>manual-therapy</code></td><td>manual-therapy, therapeutic-exercise, ultrasound</td><td><span class="pill ok">current</span></td><td><span class="pill ok">treated</span> <code>JPN-TX-000000</code></td><td><span class="pill critical">HARD hold · already-treated</span></td></tr>
+        <tr><td><code>encounter-2</code></td><td>Atlantis Doe</td><td>ATL <span class="pill critical">no spec-basis</span></td><td><code>manual-therapy</code></td><td>manual-therapy, therapeutic-exercise, ultrasound</td><td><span class="pill ok">current</span></td><td><span class="pill muted">not treated</span></td><td><span class="pill critical">HARD hold · evidence-incomplete</span></td></tr>
+        <tr><td><code>encounter-3</code></td><td>鈴木花子</td><td>JPN</td><td><code>spinal-manipulation</code></td><td>manual-therapy, therapeutic-exercise, ultrasound</td><td><span class="pill ok">current</span></td><td><span class="pill muted">not treated</span></td><td><span class="pill critical">HARD hold · treatment-outside-scope-of-practice</span></td></tr>
+        <tr><td><code>encounter-4</code></td><td>田中一郎</td><td>JPN</td><td><code>manual-therapy</code></td><td>manual-therapy, therapeutic-exercise, ultrasound</td><td><span class="pill critical">not current</span></td><td><span class="pill muted">not treated</span></td><td><span class="pill critical">HARD hold · credential-not-current</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="card">
+    <h2>Allied Health Governor — HARD rule coverage (this run)</h2>
+    <p class="muted">All five HARD rules are un-overridable: a human approver cannot approve past them, and none of these holds ever reached a human. Each row is joined against the holds this run actually produced; the reason text is the governor's own <code>:detail</code> string. <strong>Build-time invariant:</strong> <code>-main</code> throws unless every rule below is exercised, so a rule that stops firing fails the build instead of quietly disappearing from this page.</p>
+    <table>
+      <thead><tr><th>Rule</th><th>This run</th><th>Encounter</th><th>Op</th><th>Governor detail</th></tr></thead>
+      <tbody>
+        <tr><td><code>already-treated</code></td><td><span class="pill critical">HARD hold</span></td><td><code>encounter-1</code></td><td><code>actuation/administer-treatment-session</code></td><td>encounter-1 は既に治療実施済み</td></tr>
+        <tr><td><code>credential-not-current</code></td><td><span class="pill critical">HARD hold</span></td><td><code>encounter-4</code></td><td><code>credential/screen</code></td><td>担当者の資格が最新でない状態での治療実施提案は進められない</td></tr>
+        <tr><td><code>evidence-incomplete</code></td><td><span class="pill critical">HARD hold</span></td><td><code>encounter-2</code></td><td><code>actuation/administer-treatment-session</code></td><td>法域の必要書類(患者同意記録/評価記録/業務範囲確認記録/治療計画記録等)が充足していない状態での提案</td></tr>
+        <tr><td><code>no-spec-basis</code></td><td><span class="pill critical">HARD hold</span></td><td><code>encounter-2</code></td><td><code>assessment/verify</code></td><td>公式spec-basisの引用が無い提案は業務範囲基準として扱えない</td></tr>
+        <tr><td><code>treatment-outside-scope-of-practice</code></td><td><span class="pill critical">HARD hold</span></td><td><code>encounter-3</code></td><td><code>actuation/administer-treatment-session</code></td><td>encounter-3 の提案治療(:spinal-manipulation)が担当者自身の業務範囲#{:ultrasound :manual-therapy :therapeutic-exercise}の範囲外</td></tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="card">
+    <h2>Rollout phase gate</h2>
+    <p class="muted">Rendered directly from <code>alliedhealth.phase/phases</code>. This run executed at phase <code>3</code> (supervised-auto). Note that <code>:actuation/administer-treatment-session</code> appears in no phase's auto set — including phase 3. That is a permanent structural fact, not a milestone still to come, and the governor's high-stakes gate enforces the same invariant independently.</p>
+    <table>
+      <thead><tr><th>Phase</th><th>Label</th><th>May write</th><th>May auto-commit when governor-clean</th></tr></thead>
+      <tbody>
+        <tr><td><code>0</code></td><td>read-only</td><td><span class="pill muted">none</span></td><td><span class="pill muted">none</span></td></tr>
+        <tr><td><code>1</code></td><td>assisted-intake</td><td>encounter/intake</td><td><span class="pill muted">none</span></td></tr>
+        <tr><td><code>2</code></td><td>assisted-assess</td><td>assessment/verify, credential/screen, encounter/intake</td><td><span class="pill muted">none</span></td></tr>
+        <tr><td><code>3</code></td><td>supervised-auto</td><td>actuation/administer-treatment-session, assessment/verify, credential/screen, encounter/intake</td><td>encounter/intake</td></tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="card">
+    <h2>Jurisdiction spec-basis catalog</h2>
+    <p class="muted">From <code>alliedhealth.facts/catalog</code>. A jurisdiction absent from this table has NO spec-basis, full stop — the advisor must not fabricate one and the governor holds if it tries. Honest coverage over the jurisdictions actually present in this run: <strong>1 of 2</strong> covered; missing: <code>ATL</code>.</p>
+    <table>
+      <thead><tr><th>ISO3</th><th>Name</th><th>Owner authority</th><th>Legal basis</th><th>Required evidence</th><th>Provenance</th></tr></thead>
+      <tbody>
+        <tr><td><code>DEU</code></td><td>Germany</td><td>Bundesministerium für Gesundheit (BMG)</td><td>Gesetz über die Berufe in der Physiotherapie (MPhG) / Heilpraktikergesetz</td><td>4</td><td><a href="https://www.bundesgesundheitsministerium.de/themen/pflege.html">https://www.bundesgesundheitsministerium.de/themen/pflege.html</a></td></tr>
+        <tr><td><code>GBR</code></td><td>United Kingdom</td><td>Health and Care Professions Council (HCPC)</td><td>Health and Social Work Professions Order 2001</td><td>4</td><td><a href="https://www.hcpc-uk.org/">https://www.hcpc-uk.org/</a></td></tr>
+        <tr><td><code>IND</code></td><td>India</td><td>National Commission for Allied and Healthcare Professions (NCAHP), Ministry of Health and Family Welfare, Government of India -- plus State Allied and Healthcare Councils constituted under Chapter III of the Act</td><td>National Commission for Allied and Healthcare Professions Act, 2021 (Act No. 14 of 2021, 28th March 2021) -- s. 13 (Central Allied and Healthcare Professionals' Register, an online and live register), s. 33 (registration in State Register), s. 55 (no allied and healthcare professional shall discharge any duty or perform any function not authorised by this Act or any treatment not authorised within the scope of practice of the profession), Chapter III ss. 22-38 (State Allied and Healthcare Council)</td><td>4</td><td><a href="https://www.indiacode.nic.in/handle/123456789/16824">https://www.indiacode.nic.in/handle/123456789/16824</a></td></tr>
+        <tr><td><code>JPN</code></td><td>Japan</td><td>厚生労働省 (Ministry of Health, Labour and Welfare)</td><td>理学療法士及び作業療法士法 (Act on Physical Therapists and Occupational Therapists) / あん摩マッサージ指圧師、はり師、きゅう師等に関する法律</td><td>4</td><td><a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/other/index.html">https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/other/index.html</a></td></tr>
+        <tr><td><code>USA</code></td><td>United States</td><td>Federation of State Boards of Physical Therapy (FSBPT) / state allied-health licensing boards</td><td>State Practice Acts for allied-health professions; Medicare allied-health provider requirements, 42 CFR Part 484</td><td>4</td><td><a href="https://www.fsbpt.org/">https://www.fsbpt.org/</a></td></tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="card">
+    <h2>Approver attribution (measured, not assumed)</h2>
+    <p class="muted">Which approved commits actually kept the approver in the SSoT. This is <strong>derived at render time</strong> by reading each register back and testing for the <code>:approved-by</code> key — not hardcoded — so the page self-corrects if <code>alliedhealth.store</code> is later changed. Measured on this run: <code>:assessment/set</code> and <code>:credential/set</code> persist the approver because <code>commit-record!</code> stores the <code>:payload</code>, which <code>alliedhealth.operation</code>'s approval node enriches with <code>:approved-by</code>. The <code>:encounter/mark-treated</code> branch consumes neither <code>:value</code> nor <code>:payload</code> — it writes only <code>:treated?</code> and <code>:session-number</code> — so the approver of the one real-world clinical act survives in the audit trail only. Shown explicitly rather than omitted: &quot;audit only&quot; means an approver exists and is named, not that nobody approved.</p>
+    <table>
+      <thead><tr><th>Op</th><th>Encounter</th><th>Approved by</th><th>SSoT register</th><th>Approver retained?</th></tr></thead>
+      <tbody>
+        <tr><td><code>assessment/verify</code></td><td><code>encounter-1</code></td><td><code>op-1</code></td><td><code>store/assessment-of</code></td><td><span class="pill ok">in commit record</span> <code>op-1</code></td></tr>
+        <tr><td><code>credential/screen</code></td><td><code>encounter-1</code></td><td><code>op-1</code></td><td><code>store/credential-of</code></td><td><span class="pill ok">in commit record</span> <code>op-1</code></td></tr>
+        <tr><td><code>actuation/administer-treatment-session</code></td><td><code>encounter-1</code></td><td><code>op-1</code></td><td><code>store/encounter</code></td><td><span class="pill warn">audit only</span> — not in commit record</td></tr>
+        <tr><td><code>assessment/verify</code></td><td><code>encounter-3</code></td><td><code>op-1</code></td><td><code>store/assessment-of</code></td><td><span class="pill ok">in commit record</span> <code>op-1</code></td></tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="card">
+    <h2>Audit ledger (this run)</h2>
+    <p class="muted">Append-only decision-fact log straight out of <code>alliedhealth.store/ledger</code> — every commit and every hold, in order. 13 facts. Approval-request and approval-grant events are not ledger facts in this actor; they live in the graph's <code>:audit</code> channel and are joined into the attribution section above.</p>
+    <table>
+      <thead><tr><th>Fact</th><th>Op</th><th>Encounter</th><th>Basis / rules</th><th>Summary</th></tr></thead>
+      <tbody>
+        <tr><td><span class="pill ok">committed</span></td><td><code>encounter/intake</code></td><td><code>encounter-1</code></td><td>id, patient-name</td><td>診療記録更新: (:id :patient-name)</td></tr>
+        <tr><td><span class="pill ok">committed</span></td><td><code>encounter/intake</code></td><td><code>encounter-2</code></td><td>id, patient-name</td><td>診療記録更新: (:id :patient-name)</td></tr>
+        <tr><td><span class="pill ok">committed</span></td><td><code>encounter/intake</code></td><td><code>encounter-3</code></td><td>id, patient-name</td><td>診療記録更新: (:id :patient-name)</td></tr>
+        <tr><td><span class="pill ok">committed</span></td><td><code>encounter/intake</code></td><td><code>encounter-4</code></td><td>id, patient-name</td><td>診療記録更新: (:id :patient-name)</td></tr>
+        <tr><td><span class="pill ok">committed</span></td><td><code>assessment/verify</code></td><td><code>encounter-1</code></td><td>理学療法士及び作業療法士法 (Act on Physical Therapists and Occupational Therapists) / あん摩マッサージ指圧師、はり師、きゅう師等に関する法律, https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/other/index.html</td><td>JPN (厚生労働省 (Ministry of Health, Labour and Welfare)) 向け必要書類 4 件を提案</td></tr>
+        <tr><td><span class="pill ok">committed</span></td><td><code>credential/screen</code></td><td><code>encounter-1</code></td><td>credential-check</td><td>Sato Kenji: 資格は有効</td></tr>
+        <tr><td><span class="pill ok">committed</span></td><td><code>actuation/administer-treatment-session</code></td><td><code>encounter-1</code></td><td>encounter-1</td><td>encounter-1 向け治療実施提案 (patient=Sato Kenji)</td></tr>
+        <tr><td><span class="pill critical">governor-hold</span></td><td><code>actuation/administer-treatment-session</code></td><td><code>encounter-1</code></td><td>already-treated</td><td>—</td></tr>
+        <tr><td><span class="pill critical">governor-hold</span></td><td><code>assessment/verify</code></td><td><code>encounter-2</code></td><td>no-spec-basis</td><td>—</td></tr>
+        <tr><td><span class="pill critical">governor-hold</span></td><td><code>actuation/administer-treatment-session</code></td><td><code>encounter-2</code></td><td>evidence-incomplete</td><td>—</td></tr>
+        <tr><td><span class="pill ok">committed</span></td><td><code>assessment/verify</code></td><td><code>encounter-3</code></td><td>理学療法士及び作業療法士法 (Act on Physical Therapists and Occupational Therapists) / あん摩マッサージ指圧師、はり師、きゅう師等に関する法律, https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/other/index.html</td><td>JPN (厚生労働省 (Ministry of Health, Labour and Welfare)) 向け必要書類 4 件を提案</td></tr>
+        <tr><td><span class="pill critical">governor-hold</span></td><td><code>actuation/administer-treatment-session</code></td><td><code>encounter-3</code></td><td>treatment-outside-scope-of-practice</td><td>—</td></tr>
+        <tr><td><span class="pill critical">governor-hold</span></td><td><code>credential/screen</code></td><td><code>encounter-4</code></td><td>credential-not-current</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="card">
+    <h2>Treatment-session records (drafts)</h2>
+    <p class="muted">Minted by <code>alliedhealth.registry/register-treatment-session</code> on commit of the one actuation op that cleared. Every certificate this actor produces is UNSIGNED — signature is the practice's own act, not this actor's. The sequence is jurisdiction-scoped.</p>
+    <table>
+      <thead><tr><th>Record id</th><th>Encounter</th><th>Jurisdiction</th><th>Kind</th><th>Immutability</th></tr></thead>
+      <tbody>
+        <tr><td><code>JPN-TX-000000</code></td><td><code>encounter-1</code></td><td>JPN</td><td>treatment-session-draft</td><td><span class="pill ok">immutable</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+</main>
+<footer>
+  Generated at build time by <code>alliedhealth.render-html</code> (<code>clojure -M:dev:render-html</code>) by driving the real <code>alliedhealth.operation</code> langgraph StateGraph. Deterministic — no timestamps, no randomness; two consecutive runs are byte-identical. Design tokens are DADS primitives extracted from this repo's own vendored copy in <code>docs/index.html</code>.
+</footer>
+</body></html>

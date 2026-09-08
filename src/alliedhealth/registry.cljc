@@ -35,7 +35,7 @@
   treatment session itself (that is `alliedhealth.operation`'s
   `:actuation/administer-treatment-session`, always human-gated -- see
   README `Actuation`)."
-  (:require [clojure.string :as str]))
+  (:require [kotoba.lang.text :as str]))
 
 (defn- unsigned-certificate
   "Every certificate this actor produces is UNSIGNED -- signature is the
@@ -77,7 +77,7 @@
     (throw (ex-info "treatment-session: jurisdiction required" {})))
   (when (< sequence 0)
     (throw (ex-info "treatment-session: sequence must be >= 0" {})))
-  (let [session-number (str (str/upper-case jurisdiction) "-TX-" (zero-pad sequence 6))
+  (let [session-number (str (str/upper jurisdiction) "-TX-" (zero-pad sequence 6))
         record {"record_id" session-number
                 "kind" "treatment-session-draft"
                 "encounter_id" encounter-id

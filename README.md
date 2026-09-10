@@ -202,14 +202,14 @@ stack only -- no bespoke domain capability lib to reference at all.
 
 | File | Role |
 |---|---|
-| `src/alliedhealth/store.cljc` | **Store** protocol -- `MemStore` ‖ `DatomicStore` (`langchain.db`) + append-only audit ledger + treatment-session history. No dynamically-filed sub-record -- the actuation op acts directly on a pre-seeded encounter, and the double-actuation guard checks a dedicated `:treated?` boolean rather than a `:status` value |
-| `src/alliedhealth/registry.cljc` | Treatment-session draft records, plus `treatment-outside-scope-of-practice?` -- a GENUINELY NEW concept (grep-verified absent from every prior sibling), the FIFTH instance of this fleet's set-membership/conflict check family and the FIRST 'absence-from-allowed-set' polarity instance (`clinic`/`veterinary`/`entertainment`/`nursing` established the first four, all 'presence-in-forbidden-set') |
-| `src/alliedhealth/facts.cljc` | Per-jurisdiction allied-health catalog with an official spec-basis citation per entry, honest coverage reporting |
-| `src/alliedhealth/alliedhealthadvisor.cljc` | **AlliedHealth-LLM** -- `mock-advisor` ‖ `llm-advisor`; intake/assessment-verification/credential-screening/treatment-session proposals |
-| `src/alliedhealth/governor.cljc` | **Allied Health Governor** -- 4 HARD checks (spec-basis · evidence-incomplete · treatment-outside-scope-of-practice, ground-truth set-membership recompute · credential-not-current, unconditional evaluation, a literal reuse already established by `clinic` and ~18 other siblings, the 44th grounding overall) + already-treated guard + 1 soft (confidence/actuation gate) |
-| `src/alliedhealth/phase.cljc` | **Phase 0→3** -- read-only → assisted intake → assisted assess → supervised (treatment-session administration always human; encounter intake is the ONLY auto-eligible op, no direct capital risk) |
-| `src/alliedhealth/operation.cljc` | **OperationActor** -- langgraph-clj StateGraph |
-| `src/alliedhealth/sim.cljc` | demo driver |
+| `src/alliedhealth/store.kotoba` | **Store** protocol -- `MemStore` ‖ `DatomicStore` (`langchain.db`) + append-only audit ledger + treatment-session history. No dynamically-filed sub-record -- the actuation op acts directly on a pre-seeded encounter, and the double-actuation guard checks a dedicated `:treated?` boolean rather than a `:status` value |
+| `src/alliedhealth/registry.kotoba` | Treatment-session draft records, plus `treatment-outside-scope-of-practice?` -- a GENUINELY NEW concept (grep-verified absent from every prior sibling), the FIFTH instance of this fleet's set-membership/conflict check family and the FIRST 'absence-from-allowed-set' polarity instance (`clinic`/`veterinary`/`entertainment`/`nursing` established the first four, all 'presence-in-forbidden-set') |
+| `src/alliedhealth/facts.kotoba` | Per-jurisdiction allied-health catalog with an official spec-basis citation per entry, honest coverage reporting |
+| `src/alliedhealth/alliedhealthadvisor.kotoba` | **AlliedHealth-LLM** -- `mock-advisor` ‖ `llm-advisor`; intake/assessment-verification/credential-screening/treatment-session proposals |
+| `src/alliedhealth/governor.kotoba` | **Allied Health Governor** -- 4 HARD checks (spec-basis · evidence-incomplete · treatment-outside-scope-of-practice, ground-truth set-membership recompute · credential-not-current, unconditional evaluation, a literal reuse already established by `clinic` and ~18 other siblings, the 44th grounding overall) + already-treated guard + 1 soft (confidence/actuation gate) |
+| `src/alliedhealth/phase.kotoba` | **Phase 0→3** -- read-only → assisted intake → assisted assess → supervised (treatment-session administration always human; encounter intake is the ONLY auto-eligible op, no direct capital risk) |
+| `src/alliedhealth/operation.kotoba` | **OperationActor** -- langgraph-clj StateGraph |
+| `src/alliedhealth/sim.kotoba` | demo driver |
 | `test/alliedhealth/*_test.clj` | governor contract · phase invariants · store parity · registry conformance · facts coverage |
 
 ## Business-process coverage (honest)

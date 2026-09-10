@@ -34,13 +34,13 @@ Drive a single clean encounter through the actor and observe four HARD-hold case
 clojure -M:dev:run
 ```
 
-This walks the operation actor (`src/alliedhealth/operation.cljc`) through:
+This walks the operation actor (`src/alliedhealth/operation.kotoba`) through:
 1. A clean single-actuation lifecycle (encounter intake → assessment → treatment administration)
 2. Four escalation scenarios (spec-basis missing, evidence incomplete, treatment outside scope, credential expired)
 
 ## Explore the Governor
 
-The **Allied Health Governor** is your safety layer. The full implementation is at [`src/alliedhealth/governor.cljc`](../src/alliedhealth/governor.cljc) and enforces the core contract:
+The **Allied Health Governor** is your safety layer. The full implementation is at [`src/alliedhealth/governor.kotoba`](../src/alliedhealth/governor.kotoba) and enforces the core contract:
 
 ```
 AlliedHealth-LLM → Allied Health Governor → hold, proceed, or escalate
@@ -60,7 +60,7 @@ AlliedHealth-LLM → Allied Health Governor → hold, proceed, or escalate
 **Soft gate:**
 - confidence threshold + actuation-type policy (high-stakes actions always escalate)
 
-See `test/alliedhealth/phase_test.clj` for the invariant test: `administer-treatment-session-never-auto-at-any-phase`.
+See `test/alliedhealth/phase_test.kotoba` for the invariant test: `administer-treatment-session-never-auto-at-any-phase`.
 
 ## Static Analysis
 
@@ -76,13 +76,13 @@ This is required to pass CI.
 
 | File | Role |
 |---|---|
-| `src/alliedhealth/governor.cljc` | **Allied Health Governor** — four HARD checks + escalation logic |
-| `src/alliedhealth/phase.cljc` | **Phase 0→3** — state machine; encounter intake only auto-eligible, treatment administration never auto |
-| `src/alliedhealth/operation.cljc` | **OperationActor** — langgraph-clj StateGraph that orchestrates the flow |
-| `src/alliedhealth/alliedhealthadvisor.cljc` | **AlliedHealth-LLM** — LLM proposal layer (mock or real) |
-| `src/alliedhealth/registry.cljc` | Treatment-session draft records + scope-of-practice checks |
-| `src/alliedhealth/facts.cljc` | Jurisdiction catalog (JPN, USA, GBR, DEU) with official spec-basis citations |
-| `src/alliedhealth/store.cljc` | **Store protocol** — MemStore ‖ DatomicStore + audit ledger |
+| `src/alliedhealth/governor.kotoba` | **Allied Health Governor** — four HARD checks + escalation logic |
+| `src/alliedhealth/phase.kotoba` | **Phase 0→3** — state machine; encounter intake only auto-eligible, treatment administration never auto |
+| `src/alliedhealth/operation.kotoba` | **OperationActor** — langgraph-clj StateGraph that orchestrates the flow |
+| `src/alliedhealth/alliedhealthadvisor.kotoba` | **AlliedHealth-LLM** — LLM proposal layer (mock or real) |
+| `src/alliedhealth/registry.kotoba` | Treatment-session draft records + scope-of-practice checks |
+| `src/alliedhealth/facts.kotoba` | Jurisdiction catalog (JPN, USA, GBR, DEU) with official spec-basis citations |
+| `src/alliedhealth/store.kotoba` | **Store protocol** — MemStore ‖ DatomicStore + audit ledger |
 | `test/alliedhealth/*_test.clj` | Governor contract, phase invariants, store parity, registry conformance |
 
 ## Next Steps

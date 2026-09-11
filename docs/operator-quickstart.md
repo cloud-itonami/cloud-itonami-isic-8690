@@ -16,7 +16,7 @@ This guide is for **licensed allied-health practices** (physiotherapy clinics, c
 The project uses Cognitect's test runner to verify the governor contract, phase invariants, store parity, registry conformance, and facts coverage.
 
 ```bash
-clojure -M:dev:test
+kbb -M:dev:test
 ```
 
 **What it verifies:**
@@ -31,7 +31,7 @@ clojure -M:dev:test
 Drive a single clean encounter through the actor and observe four HARD-hold cases:
 
 ```bash
-clojure -M:dev:run
+kbb -M:dev:run
 ```
 
 This walks the operation actor (`src/alliedhealth/operation.kotoba`) through:
@@ -67,7 +67,7 @@ See `test/alliedhealth/phase_test.kotoba` for the invariant test: `administer-tr
 Run clj-kondo to check for errors:
 
 ```bash
-clojure -M:lint
+kbb -M:lint
 ```
 
 This is required to pass CI.

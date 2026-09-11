@@ -1,5 +1,5 @@
 (ns alliedhealth.sim
-  "Demo driver -- `clojure -M:dev:run`. Walks a clean encounter through
+  "Demo driver -- `kbb -M:dev:run`. Walks a clean encounter through
   intake -> assessment verification -> credential screening ->
   treatment-session proposal (always escalates) -> human approval ->
   commit, then shows four HARD holds (a jurisdiction with no spec-

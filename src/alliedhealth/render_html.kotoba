@@ -7,7 +7,7 @@
   actor stack -- `alliedhealth.operation` (a langgraph-clj StateGraph)
   -> `alliedhealth.governor` -> `alliedhealth.store` -- via
   `langgraph.graph/run*`, exactly the way `alliedhealth.sim`
-  (`clojure -M:dev:run`) does, and renders the resulting store.
+  (`kbb -M:dev:run`) does, and renders the resulting store.
 
   NOTHING on the page is hand-typed. Every encounter id, patient name,
   jurisdiction, treatment, scope-of-practice set, session number,
@@ -16,7 +16,7 @@
   `alliedhealth.facts` after the run. The seed set is
   `alliedhealth.store/demo-data` (`encounter-1`..`encounter-4`) -- the
   same ids this repo's own `sim` driver uses, verified by running
-  `clojure -M:dev:run` BEFORE this file was written.
+  `kbb -M:dev:run` BEFORE this file was written.
 
   What the scenario proves, beyond `sim`: `sim` exercises FOUR of the
   Allied Health Governor's five HARD rules. This scenario exercises
@@ -43,7 +43,7 @@
   keeps the build offline AND keeps the console on the same face as the
   product LP.
 
-  Usage: `clojure -M:dev:render-html [out-file]`
+  Usage: `kbb -M:dev:render-html [out-file]`
   (default `docs/samples/operator-console.html`)."
   (:require [kotoba.lang.text :as str]
             [alliedhealth.facts :as facts]
@@ -554,7 +554,7 @@
      "</main>\n"
      "<footer>\n"
      "  Generated at build time by <code>alliedhealth.render-html</code> "
-     "(<code>clojure -M:dev:render-html</code>) by driving the real "
+     "(<code>kbb -M:dev:render-html</code>) by driving the real "
      "<code>alliedhealth.operation</code> langgraph StateGraph. "
      "Deterministic — no timestamps, no randomness; two consecutive runs are "
      "byte-identical. Design tokens are DADS primitives extracted from this repo's "

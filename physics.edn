@@ -1,0 +1,33 @@
+;; What this vertical's robot physically does, declared for
+;; kotoba.robotics.process (kotoba-lang/robotics). `kbb -M:dev:physics` runs it.
+;;
+;; README "Robotics premise": a mobility-assist robot supports physical
+;; patient transfer and therapy exercises in other human health activities
+;; (ISIC 8690: physiotherapy, rehabilitation, allied health). Its physical
+;; work: holding and moving a patient's leg through a range-of-motion
+;; exercise, and pushing a patient in a wheelchair up the clinic's access ramp.
+;;
+;; Every number without a cited source is marked `estimate` in its :basis.
+;; Replacing an estimate with a sourced value is this bot's growth work.
+{:physics/schema "itonami.physical-ai.spec.v1"
+ :repo "cloud-itonami/cloud-itonami-isic-8690"
+ :cases
+ [{:id :leg-range-of-motion
+   :kind :manipulator
+   :procedure "arm supports a supine patient's leg at the ankle and raises it through a passive straight-leg range-of-motion exercise"
+   :params {:l1-m 0.50 :l2-m 0.50 :m1-kg 6.0 :m2-kg 4.0
+            :from [0.80 0.10] :to [0.45 0.70] :duration-s 4.0 :steps 500}
+   :sweep {:param :payload-kg :values [4.0 6.0 8.0 10.0 12.0]}
+   :quantity :peak-tau1-nm
+   :limit {:max 150.0 :basis "estimate: continuous shoulder torque of a 15 kg-payload-class rehabilitation arm"}
+   :boundary {:lo 1.0 :hi 40.0}}
+  {:id :wheelchair-ramp-push
+   :kind :transport
+   :procedure "robot pushes a patient in a wheelchair 15 m up the clinic's 1:12 access ramp"
+   :params {:mass-kg 45.0 :distance-m 15.0 :v-max-mps 0.8 :a-max-mps2 0.4
+            :brake-decel-mps2 0.8 :drive-force-n 180.0 :crr 0.02 :slope-deg 4.76
+            :cog-height-m 0.50 :support-half-length-m 0.40 :max-time-s 3000.0}
+   :sweep {:param :payload-kg :values [50.0 70.0 90.0 110.0 130.0]}
+   :quantity :cycle-time-s
+   :limit {:max 40.0 :basis "estimate: a 15 m ramp climbed at no less than a slow walking pace; 4.76 deg is the 1:12 maximum ramp slope of the 2010 ADA Standards 405.2"}
+   :boundary {:lo 20.0 :hi 250.0}}]}

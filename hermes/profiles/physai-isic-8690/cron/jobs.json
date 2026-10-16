@@ -17,7 +17,7 @@
         "expr": "20 22 * * *",
         "display": "20 22 * * *"
       },
-      "script": "physai_measure.py",
+      "script": "physai_measure.hy",
       "skill": null,
       "skills": [],
       "workdir": null
@@ -39,7 +39,7 @@
         "expr": "14 21 21 * *",
         "display": "14 21 21 * *"
       },
-      "script": "physai_evidence.py",
+      "script": "physai_evidence.hy",
       "skill": null,
       "skills": [],
       "workdir": null
@@ -61,7 +61,7 @@
         "expr": "17 21 * * *",
         "display": "17 21 * * *"
       },
-      "script": "necessity_impact.py",
+      "script": "necessity_impact.hy",
       "skill": null,
       "skills": [],
       "workdir": null
